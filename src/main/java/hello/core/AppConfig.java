@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * 총 관리자! 모든 배역 할당은 여기에서 이루어진다.
+ * 총 관리자! 모든 배역 할당은 여기에서 이루어진다.    -> 로미오 역할을 맡을 배우의 캐스팅은 이곳에서 진행한다.
  * 이런식으로 AppConfig에서 객체 생성, 생성자로 전달하는 것을 memberServiceImpl 입장에서는 '의존관계를 주입해주는 것 같다' 라고 하여
  * "DI" (Dependency Injection) => 의존관계 주입 이라 한다!
  */

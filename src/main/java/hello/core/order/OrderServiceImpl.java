@@ -9,6 +9,9 @@ import hello.core.member.MemoryMemberRepository;
 
 public class OrderServiceImpl implements OrderService{
 
+    /**
+     * 인터페이스에만 의존, 구현체 주입: 하단의 생성자에서! (즉 외부에서 생성자를 통해 주입해주는 것)
+     */
     private final MemberRepository memberRepository;
     private final DiscountPolicy discountPolicy; // 인터페이스에만 의존하게 코드 수정한 것! <- 누군가 외부에서 대신 여기에 구현체를 주입해주어야 한다
     
@@ -18,7 +21,7 @@ public class OrderServiceImpl implements OrderService{
     /**
      *But, OrderServiceImple은 인터페이스인 DiscountPolicy에만 의존해야 하는데, 사실 알고보면 구체 클래스인 RateDiscountPolicy도 의존하고 있게 된다!
      * 추상과 구체 모두에 의존 ? -> DIP를 위반하는 것. (DIP: 구체가 아닌 추상, 즉 인터페이스에 의존하라는 것) -> 문제!
-     * OrderServiceImpl의 구체 관련 소스코드를 변경해야 한다는 것? -> OCP 위반!!! (기능 변경이 클라이언트 코드에 영향을 미치므로)
+     * OrderServiceImpl의 구체 관련 소스코드를 변경해야 한다는 것? -> OCP 위반!!! (기능 변경이 클라이언트 코드 (여기서는 OrderServiceImpl)에 영향을 미치므로)
      * */
 
     //생성자 주입 -> 객체 주입  (OrderServiceImple은 어떤 구현체가 들어올지 전혀 몰라야 한다)
