@@ -37,4 +37,10 @@ public class OrderServiceImpl implements OrderService{
         int discountPrice=discountPolicy.discount(member,itemPrice);//discount에서 member의 레벨로 할인 여부 판단
         return new Order(memberId,itemName,itemPrice,discountPrice);
     }
+
+
+    //memoryMemberRepository 싱글톤 테스트용
+    public MemberRepository getMemberRepository(){
+        return memberRepository;
+    }
 }

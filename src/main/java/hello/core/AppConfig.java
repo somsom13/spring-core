@@ -20,24 +20,32 @@ import org.springframework.context.annotation.Configuration;
 public class AppConfig {
 
     //이제 스프링 컨테이너에서 spring bean을 찾아 관리!
+
+    //@Bean memberService -> new MemoryMemberRepository()
+    //@Bean orderService -> new MemoryMemberRepository()  : MemoryMemberRepository 두 번 호출 즉 두 번 생성 -> 싱글톤이 깨지는건?
+    //테스트 결과: memberRepository 메소드는 최초 한 번만 호출된다! (즉 한 번 컨테이너에 등록되고 나면 다른 곳에서 new로 호출해도 메소드가 실행되지 않는다)
     
     @Bean    //각 메소드를 Spring Container에 (객체로) 등록! -> 등록된 각 객체를 "Spring Bean"이라 한다.
     public MemberService memberService(){
+        System.out.println("call AppConfig.memberService"); //단축키 soutm
         return new MemberServiceImpl(memberRepository()); //여기서 생성자로 넘겨준다  => "생성자 주입"
     }
 
     @Bean
     public MemberRepository memberRepository() { //역할이 드러나게 extract Method : 어플리케이션 전체 구성을 빠르게 파악할 수 있음
+        System.out.println("call AppConfig.memberRepository");
         return new MemoryMemberRepository();
     }
 
     @Bean
     public OrderService orderService(){
+        System.out.println("call AppConfig.orderService");
         return new OrderServiceImpl(memberRepository(), getDiscountPolicy()); //객체 2개 주입 생성자로!
     }
 
     @Bean
     public RateDiscountPolicy getDiscountPolicy() {
+        System.out.println("call AppConfig.getDiscountPolicy");
         return new RateDiscountPolicy();//discountPolicy가 바뀌면, 이 부분만 변경해주면 된다!
     }
 
