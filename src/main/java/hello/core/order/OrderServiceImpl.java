@@ -1,5 +1,6 @@
 package hello.core.order;
 
+import hello.core.annotation.MainDiscountPolicy;
 import hello.core.discount.DiscountPolicy;
 import hello.core.discount.FixDiscountPolicy;
 import hello.core.discount.RateDiscountPolicy;
@@ -32,7 +33,7 @@ public class OrderServiceImpl implements OrderService{
 
     //생성자 주입 -> 객체 주입  (OrderServiceImpl은 어떤 구현체가 들어올지 전혀 몰라야 한다)
     @Autowired
-    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+    public OrderServiceImpl(MemberRepository memberRepository, @MainDiscountPolicy DiscountPolicy discountPolicy) {
         this.memberRepository = memberRepository;
 //        this.discountPolicy = rateDiscountPolicy;
         //DiscountPolicy라는 타입에 대해 fixDiscountPolicy, rateDiscountPolicy 두 개가 등록되어 에러 발생하는 경우 대비 -> 이름을 rateDiscountPolicy로 명시해준다.
