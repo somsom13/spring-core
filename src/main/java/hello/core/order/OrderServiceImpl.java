@@ -8,10 +8,11 @@ import hello.core.member.MemberRepository;
 import hello.core.member.MemoryMemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
-@RequiredArgsConstructor // final 키워드 붙은 것들로 생성자 자동 생성!
+//@RequiredArgsConstructor // final 키워드 붙은 것들로 생성자 자동 생성!
 public class OrderServiceImpl implements OrderService{
 
     /**
@@ -30,11 +31,18 @@ public class OrderServiceImpl implements OrderService{
      * */
 
     //생성자 주입 -> 객체 주입  (OrderServiceImpl은 어떤 구현체가 들어올지 전혀 몰라야 한다)
-//    @Autowired
-//    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
-//        this.memberRepository = memberRepository;
-//        this.discountPolicy = discountPolicy;
-//    }
+    @Autowired
+    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+        this.memberRepository = memberRepository;
+//        this.discountPolicy = rateDiscountPolicy;
+        //DiscountPolicy라는 타입에 대해 fixDiscountPolicy, rateDiscountPolicy 두 개가 등록되어 에러 발생하는 경우 대비 -> 이름을 rateDiscountPolicy로 명시해준다.
+
+        //Qualifier 를 사용하는 경우: 파라미터에 qualifier를 명시!
+        this.discountPolicy=discountPolicy;
+        //Qualifier는 등록대상의 위에 annoation으로 명시
+
+        //Primary annotation으로 우선순위를 부여하는게 제일 간편하다. (qualifier와 primary를 둘 다 붙인다면? qualifier (더 상세하게 지정함)이 더 우선순위가 높다)
+    }
 
     @Override
     public Order createOrder(Long memberId, String itemName, int itemPrice) {
