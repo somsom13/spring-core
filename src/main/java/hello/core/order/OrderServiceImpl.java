@@ -6,10 +6,12 @@ import hello.core.discount.RateDiscountPolicy;
 import hello.core.member.Member;
 import hello.core.member.MemberRepository;
 import hello.core.member.MemoryMemberRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor // final 키워드 붙은 것들로 생성자 자동 생성!
 public class OrderServiceImpl implements OrderService{
 
     /**
@@ -27,12 +29,12 @@ public class OrderServiceImpl implements OrderService{
      * OrderServiceImpl의 구체 관련 소스코드를 변경해야 한다는 것? -> OCP 위반!!! (기능 변경이 클라이언트 코드 (여기서는 OrderServiceImpl)에 영향을 미치므로)
      * */
 
-    //생성자 주입 -> 객체 주입  (OrderServiceImple은 어떤 구현체가 들어올지 전혀 몰라야 한다)
-    @Autowired
-    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
-        this.memberRepository = memberRepository;
-        this.discountPolicy = discountPolicy;
-    }
+    //생성자 주입 -> 객체 주입  (OrderServiceImpl은 어떤 구현체가 들어올지 전혀 몰라야 한다)
+//    @Autowired
+//    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+//        this.memberRepository = memberRepository;
+//        this.discountPolicy = discountPolicy;
+//    }
 
     @Override
     public Order createOrder(Long memberId, String itemName, int itemPrice) {
