@@ -11,7 +11,7 @@ public class AutoAppConfigTest {
 
     @Test
     void basicScan(){
-        AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext(AutoAppConfig.class);
+        AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext(AutoAppConfig.class); //AutoAppConfig (component scan방식으로 bean등록하도록 코드 작성)을 따를것임
 
         MemberService memberService = ac.getBean(MemberService.class);
         Assertions.assertThat(memberService).isInstanceOf(MemberServiceImpl.class);

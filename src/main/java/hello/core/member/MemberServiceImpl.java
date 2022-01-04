@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 /**
  * 사용자가 실제 마주하게 되는 implement
  */
-@Component("memberServiceImplName") //default로는 앞글자만 소문자로 바꾼 classname이 등록된다.
+@Component("memberServiceImplName") //default로는 class명에서 앞글자만 소문자로 바꾼 classname이 등록된다.
 public class MemberServiceImpl implements MemberService{
     
     private final MemberRepository memberRepository;
