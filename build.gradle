@@ -29,6 +29,8 @@ dependencies {
 	testCompileOnly 'org.projectlombok:lombok'
 	testAnnotationProcessor 'org.projectlombok:lombok'
 	//lombok 라이브러리 추가 끝
+	
+	implementation 'javax.inject:javax.inject:1' //JSR-330 provider 사용 위한 의존성 추가
 }
 
 test {

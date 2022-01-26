@@ -1,12 +1,14 @@
 package hello.core.scope;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Scope;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.inject.Provider;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -39,7 +41,7 @@ public class SingletonWithPrototypeTest1 {
 
         ClientBean clientBean2 = ac.getBean(ClientBean.class);
         int count2=clientBean2.logic();
-        assertThat(count2).isEqualTo(2); // 싱글톤인 클라이언트 빈 내에서 관리되는 prototype Bean -> 이미 주입이 끝난 애 이므로 프로토타입 빈이어도
+        assertThat(count2).isEqualTo(1); // 싱글톤인 클라이언트 빈 내에서 관리되는 prototype Bean -> 이미 주입이 끝난 애 이므로 프로토타입 빈이어도
         // 하나의 clientBean을 통해 호출할 경우, 새로운 인스턴스가 아닌 동일한 인스턴스 반환 -> count가 1이 아닌 2가 된다!
     }
 
@@ -47,14 +49,24 @@ public class SingletonWithPrototypeTest1 {
     @Scope("singleton") //원래 빈은 디폴트가 singleton이므로, 원래는 scope("") 를 굳이 작성해주지 않아도 된다.
 //    @RequiredArgsConstructor // autowired를 사용해서 prototypeBean을 초기화 해주지 않아도 자동으로 자기가 넣어줌
     static class ClientBean{
-        private final PrototypeBean prototypeBean; //이 prototypeBean은 clientBean이 생성되는 시점에 주입이 완료되어 버린다! 
-        
-        //이걸 해결하는 멍청한 방법: logic method 내부에서 매번 새롭게 ac.getBean(PrototypeBean.class)로 새롭게 요청, 새롭게 인스턴스를 받는것
+
+/*
+        private final PrototypeBean prototypeBean; //이 prototypeBean은 clientBean이 생성되는 시점에 주입이 완료되어 버린다!
 
         @Autowired
         public ClientBean(PrototypeBean prototypeBean) {
             this.prototypeBean = prototypeBean;
         }
+*/
+
+        //ObjectProvider: DL (필요시에만 찾아주는 의존성 조회) 기능을 제공한다!  (ObjectFactory라는 것도 존재)
+        //ObjectProvider를 사용해서 getObject를 하면, 매번 새로운 프로토타입 빈을 생성해준다!!!!!! (컨테이너를 대신 조회하는 대리자)
+//        @Autowired
+//        private ObjectProvider<PrototypeBean> prototypeBeanProvider;
+
+        @Autowired
+        private Provider<PrototypeBean> prototypeBeanProvider; // javax.inject의 provider 를 사용!!
+
 
         //클라이언트가 ClientBean을 통해 prototypeBean의 count++를 시켜주는 메서드
         public int logic(){
@@ -62,6 +74,7 @@ public class SingletonWithPrototypeTest1 {
 //            이 방법은 의존성 주입 (Dependency Injection = DI )가 아니라 직접 필요한 의존관계를 찾는 의존과꼐 조회 (탐색) (Dependency Lookup = DL )이라 한다.
 //            이런 DL 기능을 해주는게 스프링에 따로 존재한다!
 
+            PrototypeBean prototypeBean = prototypeBeanProvider.get(); //스프링의 ObjectProvider: getObject(), javax.inject의 provider: get()
             prototypeBean.addCount();
             int count=prototypeBean.getCount();
             return count;
