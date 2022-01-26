@@ -16,7 +16,7 @@ public class AutoWiredTest {
         ApplicationContext ac = new AnnotationConfigApplicationContext(TestBean.class); //component scan하듯이 TestBean을 등록
     }
 
-    //테스트에 사용할 클래스를 임의로 생성
+    //테스트에 사용할 클래스 (빈) 를 임의로 생성
     static class TestBean{
         @Autowired(required = false)
         public void setNoBean1(Member member) { //테스트를 위해 스프링빈이 관리하는 대상이 아닌 Member로 테스트
