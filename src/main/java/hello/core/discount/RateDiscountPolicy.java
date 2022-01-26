@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
-@Component //component scan에 의해 rateDiscountPolicy라는 이름으로 (deafult값) bean으로 등록된다!
+//@Component //component scan에 의해 rateDiscountPolicy라는 이름으로 (deafult값) bean으로 등록된다!
 //@Qualifier("mainDiscountPolicy")
 //@Primary
 @MainDiscountPolicy
