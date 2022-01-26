@@ -9,7 +9,7 @@ import javax.annotation.PreDestroy;
 import java.util.UUID;
 
 @Component // MyLogger는 컨테이너에 등록할 빈임
-@Scope(value = "request") //HTTP 요청당 빈 생성
+@Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS) //HTTP 요청당 빈 생성 + 프록시 생성 => 프록시 덕분에 싱글톤을 쓰듯이 사용할 수 있게 된다
 //scope= request -> 고객 요청이 온 순간 ~ 빠져나가는 순간까지가 생존범위
 //그래서 request가 없으면, MyLogger도 컨테이너에 등록되지 않는다!!
 public class MyLogger {
